@@ -5,7 +5,11 @@
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "typeRoots": [
+      "./src/types", // this is where you define your types
+      "./node_modules/@types" //this where npm packages containing types are located
+    ],
   },
   "lib": ["es2015"]
 }
