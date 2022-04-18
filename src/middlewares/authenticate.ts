@@ -16,7 +16,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   }
   // check client token is same as backend session token
   if (token === req.session?.accessToken) {
-    jwt.verify(token, process.env.jwtSecret, async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
         console.log(err);
         return res.status(401).json({ message: ["failed to authenticate"] });
