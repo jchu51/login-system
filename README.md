@@ -8,3 +8,4 @@
 
 https://github.com/DefinitelyTyped/DefinitelyTyped/issues/49941
 https://www.section.io/engineering-education/how-to-create-a-simple-rest-api-using-typescript-and-nodejs/
+https://dev.to/guillerbr/authentication-cookies-http-http-only-jwt-reactjs-context-api-and-node-on-backend-industry-structure-3f8e
