@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../../models/user";
+import generateBearerToken from "../../utils/auth/generateBearerToken";
 
 /**
  * * This function help us to update the user infomation
@@ -14,13 +15,11 @@ const update = async (req: Request, res: Response) => {
     return res.status(400).send({ success: false, message: "No body" });
   }
 
-  const { username, email }: { username: string; email: string } = body;
   const user = await User.findOneAndUpdate(
     { _id: req.currentUser._id },
     {
       $set: {
-        username,
-        email,
+        ...req.body,
       },
     },
     { new: true }
@@ -28,11 +27,15 @@ const update = async (req: Request, res: Response) => {
 
   if (!user)
     return res.status(404).json({ success: false, message: "User Not Found" });
+  //Generate new bearer token
+  const accessToken = generateBearerToken(user._id);
+  req.session.accessToken = accessToken;
+  res.cookie("token", { user: user.toJSON(), accessToken });
 
   return res.status(200).send({
     success: true,
     message: "Updated successfully!",
-    data: user,
+    data: { user },
   });
 };
 export default update;

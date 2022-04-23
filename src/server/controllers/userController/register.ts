@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import omit from "lodash/omit";
 import User from "../../models/user";
 import generateBearerToken from "../../utils/auth/generateBearerToken";
 
@@ -46,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
         .status(400)
         .send({ success: false, message: "Email already register" });
 
-    const hash = bcrypt.hashSync(password, process.env.SALT_ROUNDS);
+    const hash = bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS));
 
     const date = new Date();
 
@@ -61,11 +62,13 @@ export const register = async (req: Request, res: Response) => {
     const accessToken = generateBearerToken(user._id);
     req.session.accessToken = accessToken;
     await user.save();
+    const userData = omit(user.toJSON(), ["password"]);
+    res.cookie("token", { user: userData, accessToken });
 
     return res.status(201).send({
       success: true,
       message: "Register successfully",
-      data: user,
+      data: { user: userData, accessToken },
     });
   } catch (err) {
     console.error(`Failed to register: ${err}`);

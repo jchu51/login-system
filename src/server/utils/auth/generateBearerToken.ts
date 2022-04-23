@@ -7,7 +7,7 @@ const generateBearerToken = (userId: Types.ObjectId) => {
       sub: userId,
     },
     process.env.JWT_SECRET,
-    { expiresIn: 60 * 60 }
+    { expiresIn: 60 * 60 * 100000000 }
   );
 };
 

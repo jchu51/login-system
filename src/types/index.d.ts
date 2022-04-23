@@ -4,6 +4,7 @@ import express from "express";
 declare module "express-session" {
   interface Session {
     accessToken: string;
+    mfaToken: string;
   }
 }
 

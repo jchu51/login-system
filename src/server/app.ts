@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import session from "express-session";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import mongodbSession from "connect-mongodb-session";
 
@@ -29,9 +30,12 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+// set up cookie
+app.use(cookieParser());
 // set up session
 app.use(
   session({
+    name: "sessionToken",
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,

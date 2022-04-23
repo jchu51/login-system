@@ -14,13 +14,23 @@ module.exports = {
   },
   devServer: {
     static: "./dist",
+    hot: true,
+    historyApiFallback: true,
+    proxy: {
+      "/api/v1": "http://localhost:3000",
+      secure: false,
+    },
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
+        use: [
+          {
+            loader: require.resolve("babel-loader"),
+          },
+        ],
       },
       {
         test: /\.tsx?$/,
@@ -30,11 +40,14 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", ".json"],
+ 
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/client/index.html",
+      hash: true,
+      filename: "index.html",
     }),
   ],
 };

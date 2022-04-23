@@ -4,6 +4,8 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
+  mfaEnabled: boolean;
+  mfaToken: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +22,14 @@ const UserSchema = new Schema<IUser>({
   password: {
     type: String,
     required: true,
+  },
+  mfaEnabled: {
+    type: Boolean,
+    default: false,
+  },
+  mfaToken: {
+    type: String,
+    default: null,
   },
   createdAt: {
     type: Date,

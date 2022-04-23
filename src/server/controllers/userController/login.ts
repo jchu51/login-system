@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import omit from "lodash/omit";
 import User from "../../models/user";
 import generateBearerToken from "../../utils/auth/generateBearerToken";
 
-
 /**
- * This function help to return the user infomation, 
+ * This function help to return the user infomation,
  * it will also update the session token
- * 
- * @param req 
- * @param res 
+ *
+ * @param req
+ * @param res
  * @returns {object}
  */
 export const login = async (req: Request, res: Response) => {
@@ -38,11 +38,20 @@ export const login = async (req: Request, res: Response) => {
     //Generate new bearer token
     const accessToken = generateBearerToken(user._id);
     req.session.accessToken = accessToken;
-    await user.save();
+    // if user already enable mfa, then dont send user and accesstoken back
+    if (user.mfaEnabled) {
+      return res.status(200).send({
+        success: true,
+        data: { user: { mfaEnabled: true }, accessToken },
+      });
+    }
+
+    const userData = omit(user.toJSON(), ["password"]);
+    res.cookie("token", { user: userData, accessToken });
 
     return res.status(200).send({
       success: true,
-      data: user,
+      data: { user: userData, accessToken },
     });
   } catch (err) {
     console.error(`Failed to login: ${err}`);
