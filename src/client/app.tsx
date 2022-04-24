@@ -6,6 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import { Authenticator } from "@aws-amplify/ui-react";
 import { LoginPage, RegisterPage, UserPage } from "./pages/index";
 
 import { AuthProvider, AuthConsumer, IAuthState } from "./contexts/authContext";
