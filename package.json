@@ -6,6 +6,7 @@
   "scripts": {
     "start:server": "nodemon --exec ts-node -T ./src/server/app.ts",
     "start:client": "webpack-dev-server",
+    "webpack": "webpack",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -58,6 +59,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-session": "^1.17.2",
+    "framer-motion": "^6.3.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
